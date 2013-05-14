@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<project name="avt-build" basedir="." default="build-all">
+	<!--   all properties are in build.properties -->
+	<property file="build.properties"/>
+	
+	<target name="build-ad">
+		<ant antfile="${base.dir}/${ad.core}/build.xml" inheritAll="false" target="all"/>
+		<delete dir="${base.dir}/${xip.host}/lib/AVT" />
+		<mkdir dir="${base.dir}/${xip.host}/lib/AVT" />
+		<copy todir="${base.dir}/${xip.host}/lib/AVT" overwrite="true">
+        	<fileset dir="${base.dir}/${ad.core}/build/lib" />
+        	<fileset dir="${base.dir}/${ad.core}/lib" />
+        	<fileset dir="${base.dir}/${ad.core}/target/dependency" />
+      	</copy>
+	</target>
+	
+	<target name="build-ad-installer" >
+		<ant antfile="${base.dir}/${ad.installer}/build.xml" inheritAll="false" target="all"/>
+	</target>
+	
+	<target name="build-xip-host">
+		<ant antfile="${base.dir}/${xip.host}/build.xml" inheritAll="false" target="clean"/>
+		<ant antfile="${base.dir}/${xip.host}/build.xml" inheritAll="false" target="jar"/>
+	</target>
+	
+	<target name="build-mvt">
+		<ant antfile="${base.dir}/${cmiv.mvt}/build.xml" inheritAll="false" target="all"/>
+	</target>
+	
+	<target name="build-ae">
+		<ant antfile="${base.dir}/${cmiv.ae}/build.xml" inheritAll="false" target="all"/>
+	</target>
+	
+	<target name="build-ia">
+		<ant antfile="${base.dir}/${cmiv.ia}/build.xml" inheritAll="false" target="all"/>
+	</target>
+	
+	<target name="build-vasari">
+		<ant antfile="${base.dir}/${cmiv.vasari}/build.xml" inheritAll="false" target="all"/>
+	</target>
+
+	<target name="build-all" depends="build-ad,build-xip-host,build-mvt,build-ae,build-ad-installer,build-ia,build-vasari" />
+</project>
